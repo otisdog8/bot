@@ -1,7 +1,7 @@
 from discord.ext import commands
 
 
-EXTENSIONS_TO_LOAD = ("loading",)
+EXTENSIONS_TO_LOAD = ("loading", "minecraft")
 
 
 class Cog(commands.Cog, name="loading"):
