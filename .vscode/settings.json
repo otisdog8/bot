@@ -2,7 +2,7 @@
     "cSpell.words": [
         "getenv"
     ],
-    "python.pythonPath": "/home/otis/.cache/pypoetry/virtualenvs/bot-3HXI1k04-py3.8/bin/python",
+    "python.pythonPath": "/home/otis/.cache/pypoetry/virtualenvs/bot-3HXI1k04-py3.9",
     "python.linting.enabled": true,
     "python.testing.pytestArgs": [
         "tests"
