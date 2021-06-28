@@ -103,9 +103,7 @@ class Cog(commands.Cog, name="minecraft"):
     @commands.command()
     @commands.check(is_server_unpopulated)
     async def change_version(self, ctx, version):
-        await ctx.send(
-            "Changing server to version {} and regenerating world".format(version)
-        )
+        await ctx.send("Changing server to version {}".format(version))
         await ctx.send("Turning off server...")
         await self.turn_server_off()
         await ctx.send("Changing version jar...")
@@ -138,7 +136,7 @@ class Cog(commands.Cog, name="minecraft"):
     @start_server.error
     @change_version.error
     @reset_world.error
-    async def server_error(self, ctx, error):
+    async def cog_command_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
             await ctx.send("Server is already running or populated with players")
         else:
