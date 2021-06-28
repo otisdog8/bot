@@ -42,7 +42,7 @@ class Cog(commands.Cog, name="minecraft"):
         else:
             self = ctx
         unit = Unit(
-            b"mc-service-%c.service"
+            b"mc-service-%s.service"
             % self.config["currently_selected_version"].encode("UTF-8")
         )
         unit.load()
@@ -57,12 +57,12 @@ class Cog(commands.Cog, name="minecraft"):
             self = ctx
         if self.is_server_off():
             return True
-        resp = self.execute_command("/list")
+        resp = self.execute_command("list")
         return not resp.contains("There are 0")
 
     async def turn_server_off(self):
         unit = Unit(
-            b"mc-service-%c.service"
+            b"mc-service-%s.service"
             % self.config["currently_selected_version"].encode("UTF-8")
         )
         unit.load()
@@ -74,7 +74,7 @@ class Cog(commands.Cog, name="minecraft"):
     @commands.check(is_server_off)
     async def start_server(self, ctx):
         unit = Unit(
-            b"mc-service-%c.service"
+            b"mc-service-%s.service"
             % self.config["currently_selected_version"].encode("UTF-8")
         )
         unit.load()
