@@ -30,23 +30,11 @@ class Cog(commands.Cog, name="minecraft"):
             self.config["rcon_port"] = 25575
         self.config_handler.set_config("minecraft", self.config)
 
-        # Setup the persistent rcon connection
-        self.mcr = MCRcon(
-            self.config["server_ip"],
-            getenv("RCON_PASSWORD"),
-            port=self.config["rcon_port"],
-        )
-        self.mcr.connect()
-
     def get_server_path(self):
         return join(
             self.config["server_root_directory"],
             "mc-server-{}".format(self.config["currently_selected_version"]),
         )
-
-    def cog_unload(self):
-        self.mcr.disconnect()
-        super().cog_unload()
 
     def is_server_off(ctx):
         if isinstance(ctx, Context):
@@ -69,7 +57,7 @@ class Cog(commands.Cog, name="minecraft"):
             self = ctx
         if self.is_server_off():
             return True
-        resp = self.mcr.command("/list")
+        resp = self.execute_command("/list")
         return not resp.contains("There are 0")
 
     async def turn_server_off(self):
@@ -116,9 +104,17 @@ class Cog(commands.Cog, name="minecraft"):
         shutil.rmtree(join(self.get_server_path(), "world_the_end"))
         await ctx.invoke(self.bot.get_command("start_server"))
 
+    async def execute_command(self, command):
+        with MCRcon(
+            self.config["server_ip"],
+            getenv("RCON_PASSWORD"),
+            port=self.config["rcon_port"],
+        ) as mcr:
+            return mcr.command(command)
+
     @commands.command()
     async def execute(self, ctx, command):
-        await ctx.send(self.mcr.command(command))
+        await ctx.send(self.execute_command(command))
 
     @start_server.error
     @change_version.error
