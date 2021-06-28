@@ -50,7 +50,7 @@ class Cog(commands.Cog, name="minecraft"):
             unit.Unit.ActiveState == b"inactive" or unit.Unit.ActiveState == b"failed"
         )
 
-    def is_server_populated(ctx):
+    def is_server_unpopulated(ctx):
         if isinstance(ctx, Context):
             self = ctx.cog
         else:
@@ -58,7 +58,7 @@ class Cog(commands.Cog, name="minecraft"):
         if self.is_server_off():
             return True
         resp = self.execute_command("list")
-        return "There are 0" not in resp
+        return "There are 0" in resp
 
     async def turn_server_off(self):
         unit = Unit(
@@ -81,7 +81,7 @@ class Cog(commands.Cog, name="minecraft"):
         unit.Unit.Start(b"replace")
 
     @commands.command()
-    @commands.check(is_server_populated)
+    @commands.check(is_server_unpopulated)
     async def change_version(self, ctx, version):
         await ctx.send(
             "Changing server to version {} and regenerating world".format(version)
@@ -95,7 +95,7 @@ class Cog(commands.Cog, name="minecraft"):
         await ctx.invoke(self.bot.get_command("start_server"))
 
     @commands.command()
-    @commands.check(is_server_populated)
+    @commands.check(is_server_unpopulated)
     async def reset_world(self, ctx):
         await self.turn_server_off()
         await ctx.send("Changing world...")
