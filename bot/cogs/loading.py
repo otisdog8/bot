@@ -3,6 +3,7 @@ from discord.ext import commands
 
 EXTENSIONS_TO_LOAD = ("loading", "config")
 EXTENSIONS_THAT_EXIST = list(EXTENSIONS_TO_LOAD) + ["minecraft"]
+UNRELOADABLE_EXTENSIONS = ("config",)
 
 
 class Cog(commands.Cog, name="loading"):
@@ -24,7 +25,7 @@ class Cog(commands.Cog, name="loading"):
     @commands.is_owner()
     async def _reload(self, ctx, *modules):
         for m in modules:
-            if m in EXTENSIONS_THAT_EXIST:
+            if m in EXTENSIONS_THAT_EXIST and m not in UNRELOADABLE_EXTENSIONS:
                 self.bot.reload_extension("cogs." + m)
                 await ctx.send("Reloaded " + m)
             else:
@@ -40,12 +41,6 @@ class Cog(commands.Cog, name="loading"):
             else:
                 await ctx.send("Module not found")
 
-    @commands.command()
-    @commands.is_owner()
-    async def reload_all(self, ctx):
-        self._reload_all()
-
-    @reload_all.error
     @load.error
     @_reload.error
     @unload.error

@@ -14,21 +14,14 @@ class Cog(commands.Cog, name="minecraft"):
         self.ratelimit = 0
 
         # Handle setting up the config
-        self.config_handler = bot.get_cog("config")
-        self.config = self.config_handler.get_config("minecraft")
+        self.config = bot.get_cog("config").get_config("minecraft")
 
         # Default values
-        if "server_ip" not in self.config:
-            self.config["server_ip"] = "127.0.0.1"
-        if "versions" not in self.config:
-            self.config["versions"] = ["1.8", "1.17"]
-        if "servers_root_directory" not in self.config:
-            self.config["servers_root_directory"] = "/insert/path/here/"
-        if "currently_selected_version" not in self.config:
-            self.config["currently_selected_version"] = "1.8"
-        if "rcon_port" not in self.config:
-            self.config["rcon_port"] = 25575
-        self.config_handler.set_config("minecraft", self.config)
+        self.config.set_default("server_ip", "127.0.0.1")
+        self.config.set_default("versions", ["1.8", "1.17"])
+        self.config.set_default("servers_root_directory", "/insert/path/here/")
+        self.config.set_default("currently_selected_version", "1.8")
+        self.config.set_default("rcon_port", 25575)
 
     def get_server_path(self):
         return join(
@@ -96,7 +89,6 @@ class Cog(commands.Cog, name="minecraft"):
         await ctx.send("Changing version jar...")
         if version in self.config["versions"]:
             self.config["currently_selected_version"] = version
-        self.config_handler.set_config("minecraft", self.config)
         await ctx.invoke(self.bot.get_command("start_server"))
 
     @commands.command()
