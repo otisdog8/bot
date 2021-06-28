@@ -10,7 +10,11 @@ class Cog(commands.Cog, name="config"):
         self.sections = []
 
     def get_config(self, section):
-        section = ConfigSection(self, section, self.data[section])
+        if section in self.data:
+            data = self.data[section]
+        else:
+            data = {}
+        section = ConfigSection(self, section, data)
         self.sections.append(section)
         return section
 
