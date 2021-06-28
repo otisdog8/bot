@@ -53,7 +53,7 @@ class ConfigSection:
 
     def set_default(self, key, value):
         if key not in self.data:
-            self.data[key] = value
+            self.__setitem__(key, value)
 
 
 def setup(bot):
