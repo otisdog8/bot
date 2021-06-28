@@ -93,6 +93,11 @@ class Cog(commands.Cog, name="minecraft"):
         await ctx.invoke(self.bot.get_command("start_server"))
 
     @commands.command()
+    async def force_set_version(self, ctx, version):
+        if version in self.config["versions"]:
+            self.config["currently_selected_version"] = version
+
+    @commands.command()
     @commands.check(is_server_unpopulated)
     async def reset_world(self, ctx):
         await self.turn_server_off()
