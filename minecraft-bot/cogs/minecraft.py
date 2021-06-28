@@ -32,7 +32,7 @@ class Cog(commands.Cog, name="minecraft"):
 
     def get_server_path(self):
         return join(
-            self.config["server_root_directory"],
+            self.config["servers_root_directory"],
             "mc-server-{}".format(self.config["currently_selected_version"]),
         )
 
@@ -79,6 +79,7 @@ class Cog(commands.Cog, name="minecraft"):
         )
         unit.load()
         unit.Unit.Start(b"replace")
+        await ctx.send("Started Server")
 
     @commands.command()
     @commands.check(is_server_unpopulated)
