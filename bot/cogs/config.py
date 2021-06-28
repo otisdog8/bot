@@ -10,7 +10,7 @@ class Cog(commands.Cog, name="config"):
         self.sections = []
 
     def get_config(self, section):
-        section = ConfigSection(self, section)
+        section = ConfigSection(self, section, self.data[section])
         self.sections.append(section)
         return section
 
@@ -29,14 +29,16 @@ class Cog(commands.Cog, name="config"):
     @commands.command()
     async def reload_config(self, ctx):
         self.load_json()
+        for i in self.sections:
+            i.__init__(self, i.section, self.data[i.section])
         await ctx.send("Reloaded config")
 
 
 class ConfigSection:
-    def __init__(self, parent, section):
+    def __init__(self, parent, section, data):
         self.parent = parent
         self.section = section
-        self.data = {}
+        self.data = data
 
     def __getitem__(self, item):
         return self.data[item]
