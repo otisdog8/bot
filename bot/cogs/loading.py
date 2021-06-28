@@ -1,7 +1,8 @@
 from discord.ext import commands
 
 
-EXTENSIONS_TO_LOAD = ("loading",)
+EXTENSIONS_TO_LOAD = ("loading", "config")
+EXTENSIONS_THAT_EXIST = list(EXTENSIONS_TO_LOAD) + []
 
 
 class Cog(commands.Cog, name="loading"):
