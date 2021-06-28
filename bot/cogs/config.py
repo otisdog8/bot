@@ -28,7 +28,7 @@ class Cog(commands.Cog, name="config"):
 
     def save_json(self):
         with open("config.json", "w") as f:
-            json.dump(self.data, f)
+            json.dump(self.data, f, indent="\t")
 
     @commands.command()
     async def reload_config(self, ctx):
