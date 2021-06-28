@@ -1,13 +1,18 @@
 {
     "cSpell.words": [
-        "getenv"
+        "asyncio",
+        "getenv",
+        "mcrcon",
+        "pystemd",
+        "rcon"
     ],
-    "python.pythonPath": "/home/otis/.cache/pypoetry/virtualenvs/bot-3HXI1k04-py3.9",
+    "python.pythonPath": "/home/otis/.cache/pypoetry/virtualenvs/minecraft-bot-qdQ77SUv-py3.9",
     "python.linting.enabled": true,
     "python.testing.pytestArgs": [
         "tests"
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.nosetestsEnabled": false,
-    "python.testing.pytestEnabled": true
+    "python.testing.pytestEnabled": true,
+    "restructuredtext.confPath": ""
 }
