@@ -21,7 +21,7 @@ class Cog(commands.Cog, name="config"):
 
     def load_json(self):
         with open("config.json", "r") as f:
-            json.load(f)
+            self.data = json.load(f)
 
     def save_json(self):
         with open("config.json", "w") as f:
