@@ -19,17 +19,23 @@ class Cog(commands.Cog, name="minecraft"):
 
         # Default values
         if "server_ip" not in self.config:
-            self.config["server_ip"] = "127.0.0.1:5000"
+            self.config["server_ip"] = "127.0.0.1"
         if "versions" not in self.config:
             self.config["versions"] = ["1.8", "1.17"]
         if "servers_root_directory" not in self.config:
             self.config["servers_root_directory"] = "/insert/path/here/"
         if "currently_selected_version" not in self.config:
             self.config["currently_selected_version"] = "1.8"
+        if "rcon_port" not in self.config:
+            self.config["rcon_port"] = 25575
         self.config_handler.set_config("minecraft", self.config)
 
         # Setup the persistent rcon connection
-        self.mcr = MCRcon(self.config["server_ip"], getenv("RCON_PASSWORD"))
+        self.mcr = MCRcon(
+            self.config["server_ip"],
+            getenv("RCON_PASSWORD"),
+            port=self.config["rcon_port"],
+        )
         self.mcr.connect()
 
     def get_server_path(self):
