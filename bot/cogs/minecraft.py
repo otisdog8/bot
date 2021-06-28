@@ -22,6 +22,8 @@ class Cog(commands.Cog, name="minecraft"):
         self.config.set_default("servers_root_directory", "/insert/path/here/")
         self.config.set_default("currently_selected_version", "1.8")
         self.config.set_default("rcon_port", 25575)
+        if not self.is_server_off:
+            self.connect_rcon()
 
     def get_server_path(self):
         return join(
@@ -54,6 +56,7 @@ class Cog(commands.Cog, name="minecraft"):
         return "There are 0" in resp
 
     async def turn_server_off(self):
+        self.disconnect_rcon()
         unit = Unit(
             b"mc-service-%s.service"
             % self.config["currently_selected_version"].encode("UTF-8")
@@ -62,6 +65,17 @@ class Cog(commands.Cog, name="minecraft"):
         unit.Unit.Stop(b"replace")
         while not self.is_server_off():
             await sleep(1)
+
+    def connect_rcon(self):
+        self.mcr = MCRcon(
+            self.config["server_ip"],
+            getenv("RCON_PASSWORD"),
+            port=self.config["rcon_port"],
+        )
+        self.mcr.connect()
+
+    def disconnect_rcon(self):
+        self.mcr.disconnect()
 
     @commands.command()
     @commands.check(is_server_off)
@@ -73,6 +87,8 @@ class Cog(commands.Cog, name="minecraft"):
         unit.load()
         unit.Unit.Start(b"replace")
         await ctx.send("Started Server")
+        await sleep(15)
+        self.connect_rcon()
 
     @commands.command()
     @commands.check(is_server_unpopulated)
@@ -109,12 +125,7 @@ class Cog(commands.Cog, name="minecraft"):
         await ctx.invoke(self.bot.get_command("start_server"))
 
     def execute_command(self, command):
-        with MCRcon(
-            self.config["server_ip"],
-            getenv("RCON_PASSWORD"),
-            port=self.config["rcon_port"],
-        ) as mcr:
-            return mcr.command(command)
+        return self.mcr.command(command)
 
     @commands.command()
     async def execute(self, ctx, command):
