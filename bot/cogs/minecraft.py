@@ -78,6 +78,7 @@ class Cog(commands.Cog, name="minecraft"):
     @commands.check(is_server_unpopulated)
     async def stop_server(self, ctx):
         await self.turn_server_off()
+        await ctx.send("Stopped Server")
 
     @commands.command()
     @commands.check(is_server_unpopulated)
