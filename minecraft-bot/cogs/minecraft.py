@@ -104,7 +104,7 @@ class Cog(commands.Cog, name="minecraft"):
         shutil.rmtree(join(self.get_server_path(), "world_the_end"))
         await ctx.invoke(self.bot.get_command("start_server"))
 
-    async def execute_command(self, command):
+    def execute_command(self, command):
         with MCRcon(
             self.config["server_ip"],
             getenv("RCON_PASSWORD"),
