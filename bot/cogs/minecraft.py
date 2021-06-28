@@ -22,7 +22,7 @@ class Cog(commands.Cog, name="minecraft"):
         self.config.set_default("servers_root_directory", "/insert/path/here/")
         self.config.set_default("currently_selected_version", "1.8")
         self.config.set_default("rcon_port", 25575)
-        if not self.is_server_off:
+        if not self.is_server_off():
             self.connect_rcon()
 
     def get_server_path(self):
@@ -76,6 +76,10 @@ class Cog(commands.Cog, name="minecraft"):
 
     def disconnect_rcon(self):
         self.mcr.disconnect()
+
+    def cog_unload(self):
+        self.disconnect_rcon()
+        super().cog_unload()
 
     @commands.command()
     @commands.check(is_server_off)
