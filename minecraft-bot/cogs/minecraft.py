@@ -58,7 +58,7 @@ class Cog(commands.Cog, name="minecraft"):
         if self.is_server_off():
             return True
         resp = self.execute_command("list")
-        return not resp.contains("There are 0")
+        return "There are 0" not in resp
 
     async def turn_server_off(self):
         unit = Unit(
