@@ -1,6 +1,11 @@
 from discord.ext import commands
+from discord.ext.commands import Context
 from os import getenv
 from mcrcon import MCRcon
+from pystemd.systemd1 import Unit
+from os.path import join
+from asyncio import sleep
+import shutil
 
 
 class Cog(commands.Cog, name="minecraft"):
@@ -8,29 +13,78 @@ class Cog(commands.Cog, name="minecraft"):
         self.bot = bot
         self.ratelimit = 0
 
+        # Handle setting up the config
+        self.config_handler = bot.get_cog("config")
+        self.config = self.config_handler.get_config("minecraft")
+
+        # Default values
+        if "server_ip" not in self.config:
+            self.config["server_ip"] = "127.0.0.1:5000"
+        if "versions" not in self.config:
+            self.config["versions"] = ["1.8", "1.17"]
+        if "servers_root_directory" not in self.config:
+            self.config["servers_root_directory"] = "/insert/path/here/"
+        if "currently_selected_version" not in self.config:
+            self.config["currently_selected_version"] = "1.8"
+        self.config_handler.set_config("minecraft", self.config)
+
+        # Setup the persistent rcon connection
+        self.mcr = MCRcon(self.config["server_ip"], getenv("RCON_PASSWORD"))
+        self.mcr.connect()
+
+    def get_server_path(self):
+        return join(
+            self.config["server_root_directory"],
+            "mc-server-{}".format(self.config["currently_selected_version"]),
+        )
+
+    def cog_unload(self):
+        self.mcr.disconnect()
+        super().cog_unload()
+
     def is_server_off(ctx):
-        try:
-            with MCRcon("10.0.0.8", getenv("RCON_PASSWORD")) as mcr:
-                mcr.command("/list")
-            return True
-        except Exception:
-            return False
+        if isinstance(ctx, Context):
+            self = ctx.cog
+        else:
+            self = ctx
+        unit = Unit(
+            b"mc-service-%c.service"
+            % self.config["currently_selected_version"].encode("UTF-8")
+        )
+        unit.load()
+        return (
+            unit.Unit.ActiveState == b"inactive" or unit.Unit.ActiveState == b"failed"
+        )
 
     def is_server_populated(ctx):
-        self = ctx.cog
+        if isinstance(ctx, Context):
+            self = ctx.cog
+        else:
+            self = ctx
         if self.is_server_off():
             return True
-        with MCRcon("10.0.0.8", getenv("RCON_PASSWORD")) as mcr:
-            resp = mcr.command("/list")
-            return not resp.contains("There are 0")
+        resp = self.mcr.command("/list")
+        return not resp.contains("There are 0")
 
-    def turn_server_off(self):
-        pass
+    async def turn_server_off(self):
+        unit = Unit(
+            b"mc-service-%c.service"
+            % self.config["currently_selected_version"].encode("UTF-8")
+        )
+        unit.load()
+        unit.Unit.Stop(b"replace")
+        while not self.is_server_off():
+            await sleep(1)
 
     @commands.command()
     @commands.check(is_server_off)
     async def start_server(self, ctx):
-        pass
+        unit = Unit(
+            b"mc-service-%c.service"
+            % self.config["currently_selected_version"].encode("UTF-8")
+        )
+        unit.load()
+        unit.Unit.Start(b"replace")
 
     @commands.command()
     @commands.check(is_server_populated)
@@ -39,18 +93,26 @@ class Cog(commands.Cog, name="minecraft"):
             "Changing server to version {} and regenerating world".format(version)
         )
         await ctx.send("Turning off server...")
-        # Turn off server here
+        await self.turn_server_off()
         await ctx.send("Changing version jar...")
-        # Changing jars
+        if version in self.config["versions"]:
+            self.config["currently_selected_version"] = version
+        self.config_handler.set_config("minecraft", self.config)
         await ctx.invoke(self.bot.get_command("start_server"))
 
     @commands.command()
     @commands.check(is_server_populated)
     async def reset_world(self, ctx):
-        # Turn off server here
+        await self.turn_server_off()
         await ctx.send("Changing world...")
-        # Changing world
+        shutil.rmtree(join(self.get_server_path(), "world"))
+        shutil.rmtree(join(self.get_server_path(), "world_nether"))
+        shutil.rmtree(join(self.get_server_path(), "world_the_end"))
         await ctx.invoke(self.bot.get_command("start_server"))
+
+    @commands.command()
+    async def execute(self, ctx, command):
+        await ctx.send(self.mcr.command(command))
 
     @start_server.error
     @change_version.error

@@ -13,7 +13,7 @@ class Cog(commands.Cog, name="loading"):
     @commands.is_owner()
     async def load(self, ctx, *modules):
         for m in modules:
-            if m in EXTENSIONS_TO_LOAD:
+            if m in EXTENSIONS_THAT_EXIST:
                 self.bot.load_extension("cogs." + m)
                 await ctx.send("Loaded " + m)
             else:
@@ -24,7 +24,7 @@ class Cog(commands.Cog, name="loading"):
     @commands.is_owner()
     async def _reload(self, ctx, *modules):
         for m in modules:
-            if m in EXTENSIONS_TO_LOAD:
+            if m in EXTENSIONS_THAT_EXIST:
                 self.bot.reload_extension("cogs." + m)
                 await ctx.send("Reloaded " + m)
             else:
@@ -34,7 +34,7 @@ class Cog(commands.Cog, name="loading"):
     @commands.is_owner()
     async def unload(self, ctx, *modules):
         for m in modules:
-            if m in EXTENSIONS_TO_LOAD:
+            if m in EXTENSIONS_THAT_EXIST:
                 self.bot.unload_extension("cogs." + m)
                 await ctx.send("Unloaded " + m)
             else:

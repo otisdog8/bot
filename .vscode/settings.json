@@ -1,6 +1,10 @@
 {
     "cSpell.words": [
-        "getenv"
+        "asyncio",
+        "getenv",
+        "mcrcon",
+        "pystemd",
+        "rcon"
     ],
     "python.pythonPath": "/home/otis/.cache/pypoetry/virtualenvs/minecraft-bot-qdQ77SUv-py3.9",
     "python.linting.enabled": true,
