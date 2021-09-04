@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "minecraft-bot"
+name = "bot"
 version = "0.1.0"
 description = ""
 authors = ["Otisdog8 <otis@otisroot.com>"]
