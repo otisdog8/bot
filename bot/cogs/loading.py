@@ -2,7 +2,7 @@ from discord.ext import commands
 
 
 EXTENSIONS_TO_LOAD = ("loading", "config", "loading_redundant")
-EXTENSIONS_THAT_EXIST = list(EXTENSIONS_TO_LOAD) + ["minecraft"]
+EXTENSIONS_THAT_EXIST = list(EXTENSIONS_TO_LOAD) + ["minecraft", "channelarchive"]
 UNRELOADABLE_EXTENSIONS = ("config",)
 
 
