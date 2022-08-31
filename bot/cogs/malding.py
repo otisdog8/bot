@@ -17,7 +17,7 @@ class Cog(commands.Cog, name="malding"):
             await asyncio.sleep(duration)
             if (self.last_message + datetime.timedelta(seconds=duration)) < datetime.datetime.now():
                 # Purge the channel
-                message.channel.purge(limit=None)
+                await message.channel.purge(limit=None)
 
 
 
