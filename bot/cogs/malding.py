@@ -22,10 +22,11 @@ class Cog(commands.Cog, name="malding"):
         diff = time - now
         secs = diff.total_seconds()
         print(secs)
-        await asyncio.sleep(secs)
+        #await asyncio.sleep(secs)
         while True:
             # Delete and recreate
             guild = await self.bot.fetch_guild(guildId)
+            print(guild)
             for channel in guild.channels:
                 print(channel.name)
                 if channel.name == channel_name:
