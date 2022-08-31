@@ -4,7 +4,7 @@ import datetime
 import discord
 from discord.ext import commands
 
-duration: int = 3600
+duration: int = 10
 
 class Cog(commands.Cog, name="malding"):
     def __init__(self, bot):
