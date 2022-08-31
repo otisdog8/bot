@@ -1,7 +1,7 @@
 from discord.ext import commands
 
 
-class Cog(commands.Cog, name="loading"):
+class Cog(commands.Cog, name="loading_redundant"):
     def __init__(self, bot):
         self.bot = bot
 
