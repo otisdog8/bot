@@ -9,13 +9,13 @@ class Cog(commands.Cog, name="management"):
 
     @commands.command()
     @commands.check(is_owner())
-    def stop(self):
+    async def stop(self):
         await self.bot.close()
         exit(0)
 
     @commands.command()
     @commands.check(is_owner())
-    def restart(self):
+    async def restart(self):
         await self.bot.close()
         unit = Unit(
             "edward-bot.service"
