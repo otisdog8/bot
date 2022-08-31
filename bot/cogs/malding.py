@@ -11,7 +11,7 @@ class Cog(commands.Cog, name="malding"):
         self.bot = bot
 
     @commands.Cog.listener()
-    def on_message(self, message: discord.Message):
+    async def on_message(self, message: discord.Message):
         if message.guild.id == 964451976186310668 and message.channel.id == 1014390289181446174:
             self.last_message = datetime.datetime.now()
             await asyncio.sleep(duration)
