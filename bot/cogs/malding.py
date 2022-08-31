@@ -32,7 +32,7 @@ class Cog(commands.Cog, name="malding"):
                 if channel.name == channel_name:
                     await channel.delete(reason="Delete malding")
                     await guild.create_text_channel(channel_name, reason="Recreate malding", category=channel.category)
-                break
+                    break
             await asyncio.sleep(60)
 
     @commands.Cog.listener()
