@@ -13,7 +13,7 @@ class Cog(commands.Cog, name="persistent_state_broker"):
         self.state[key] = val
 
     def get_state(self, key: str) -> Any:
-        return self.state.pop(key)
+        return self.state.pop(key, None)
 
 async def setup(bot):
     await bot.add_cog(Cog(bot))
