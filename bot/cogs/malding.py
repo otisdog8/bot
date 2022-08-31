@@ -16,6 +16,9 @@ class Cog(commands.Cog, name="malding"):
         diff = time - now
         secs = diff.total_seconds()
         print(secs)
+        print(now)
+        print(time)
+        print(diff)
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
