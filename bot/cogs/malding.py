@@ -5,29 +5,43 @@ import discord
 from discord.ext import commands
 
 duration: int = 10
+guildId: int = 964451976186310668
+channel_name: str = "bot-test-channel"
 
 class Cog(commands.Cog, name="malding"):
     def __init__(self, bot):
-        self.bot = bot
+        self.last_message: datetime.datetime = None
+        self.bot: commands.Bot = bot
 
     async def cog_load(self) -> None:
         now = datetime.datetime.now()
-        time = now.replace(hour=7)
+        time = now.replace(hour=6, minute=50, second=0, microsecond=0)
         diff = time - now
         secs = diff.total_seconds()
         print(secs)
-        print(now)
-        print(time)
-        print(diff)
+        await asyncio.sleep(secs)
+        while True:
+            # Delete and recreate
+            guild = await self.bot.fetch_guild(guild)
+            for channel in guild.channels:
+                if channel.name == channel_name:
+                    await channel.delete(reason="Delete malding")
+                    await guild.create_text_channel(channel_name, reason="Recreate malding", category=channel.category)
+                break
+            await asyncio.sleep(60)
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
-        if message.guild.id == 964451976186310668 and message.channel.id == 1014390289181446174:
+        # TODO: add channel find logic
+        if message.guild.id == guildId:
             self.last_message = datetime.datetime.now()
             await asyncio.sleep(duration)
             if (self.last_message + datetime.timedelta(seconds=duration)) < datetime.datetime.now():
                 # Purge the channel
-                await message.channel.purge(limit=None)
+                for channel in message.guild.channels:
+                    if channel.name == channel_name:
+                        await message.channel.purge(limit=None)
+                        break
 
 
 
