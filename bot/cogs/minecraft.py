@@ -12,9 +12,8 @@ class Cog(commands.Cog, name="minecraft"):
     def __init__(self, bot):
         self.bot = bot
         self.ratelimit = 0
-
         # Handle setting up the config
-        self.config = bot.get_cog("config").get_config("minecraft")
+        self.config = bot.get_cog("config").get_config(self.__cog_name__)
 
         # Default values
         self.config.set_default("server_ip", "127.0.0.1")
