@@ -64,5 +64,6 @@ class Cog(commands.Cog, name="loading"):
             await self.bot.unload_extension("cogs." + m)
 
 
-def setup(bot):
-    bot.add_cog(Cog(bot))
+async def setup(bot):
+    await bot.add_cog(Cog(bot))
+

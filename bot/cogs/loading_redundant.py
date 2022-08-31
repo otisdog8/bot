@@ -37,5 +37,6 @@ class Cog(commands.Cog, name="loading"):
             await ctx.send(error)
 
 
-def setup(bot):
-    bot.add_cog(Cog(bot))
+async def setup(bot):
+    await bot.add_cog(Cog(bot))
+

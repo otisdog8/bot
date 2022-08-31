@@ -29,7 +29,7 @@ async def main():
     bot = commands.Bot(command_prefix="~", intents=intents)
 
     await bot.load_extension("cogs.loading")
-    bot.get_cog("loading")._initialize_all()
+    await bot.get_cog("loading")._initialize_all()
 
     @bot.event
     async def on_ready():
