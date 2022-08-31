@@ -7,7 +7,6 @@ from discord.ext import commands
 duration: int = 3600
 
 class Cog(commands.Cog, name="malding"):
-
     def __init__(self, bot):
         self.bot = bot
 
