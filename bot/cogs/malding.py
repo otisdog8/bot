@@ -25,7 +25,7 @@ class Cog(commands.Cog, name="malding"):
         #await asyncio.sleep(secs)
         while True:
             # Delete and recreate
-            guild = await self.bot.fetch_guild(guildId)
+            guild = await self.bot.get_guild(guildId)
             print(guild)
             for channel in guild.channels:
                 print(channel.name)
