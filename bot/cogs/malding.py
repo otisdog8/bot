@@ -12,7 +12,7 @@ class Cog(commands.Cog, name="malding"):
 
     async def cog_load(self) -> None:
         now = datetime.datetime.now()
-        time = now.replace(hour=23)
+        time = now.replace(hour=7)
         diff = time - now
         secs = diff.total_seconds()
         print(secs)
