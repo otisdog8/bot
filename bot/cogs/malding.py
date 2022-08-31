@@ -4,9 +4,9 @@ import datetime
 import discord
 from discord.ext import commands
 
-duration: int = 10
+duration: int = 60*60
 guildId: int = 964451976186310668
-channel_name: str = "bot-test-channel"
+channel_name: str = "malding"
 
 class Cog(commands.Cog, name="malding"):
     def __init__(self, bot):
@@ -18,7 +18,7 @@ class Cog(commands.Cog, name="malding"):
 
     async def run_channel_deletes(self) -> None:
         now = datetime.datetime.now()
-        time = now.replace(hour=6, minute=6, second=0, microsecond=0)
+        time = now.replace(hour=7, minute=0, second=0, microsecond=0)
         diff = time - now
         secs = diff.total_seconds()
         await asyncio.sleep(secs)
@@ -30,7 +30,7 @@ class Cog(commands.Cog, name="malding"):
                     await channel.delete(reason="Delete malding")
                     await guild.create_text_channel(channel_name, reason="Recreate malding", category=channel.category)
                     break
-            await asyncio.sleep(60)
+            await asyncio.sleep(60*60*24)
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
