@@ -1,7 +1,7 @@
 from discord.ext import commands
 
 
-EXTENSIONS_TO_LOAD = ("loading", "config", "loading_redundant", "dad", "management", "scheduler", "persistent_state_broker")
+EXTENSIONS_TO_LOAD = ("loading", "config", "loading_redundant",  "persistent_state_broker", "management", "scheduler", "dad")
 EXTENSIONS_THAT_EXIST = list(EXTENSIONS_TO_LOAD) + ["minecraft", "channelarchive", "malding"]
 UNRELOADABLE_EXTENSIONS = ("config",)
 
