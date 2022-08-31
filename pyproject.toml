@@ -6,7 +6,7 @@ authors = ["Otisdog8 <otis@otisroot.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-discord = "^1.0.1"
+discord = "2.0.0"
 python-dotenv = "^0.14.0"
 mcrcon = "^0.6.0"
 pystemd = "^0.8.0"
