@@ -21,6 +21,8 @@ class Cog(commands.Cog, name="malding"):
         time = now.replace(hour=7, minute=0, second=0, microsecond=0)
         diff = time - now
         secs = diff.total_seconds()
+        secs = secs if secs > 0 else secs + 24*60*60
+        await self.bot.get_guild(guildId).get_channel(1014576933255786598).send(str(secs))
         await asyncio.sleep(secs)
         while True:
             # Delete and recreate
