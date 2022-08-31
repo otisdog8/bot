@@ -18,17 +18,14 @@ class Cog(commands.Cog, name="malding"):
 
     async def run_channel_deletes(self) -> None:
         now = datetime.datetime.now()
-        time = now.replace(hour=5, minute=58, second=0, microsecond=0)
+        time = now.replace(hour=6, minute=6, second=0, microsecond=0)
         diff = time - now
         secs = diff.total_seconds()
-        print(secs)
-        #await asyncio.sleep(secs)
+        await asyncio.sleep(secs)
         while True:
             # Delete and recreate
             guild = self.bot.get_guild(guildId)
-            print(guild)
             for channel in guild.channels:
-                print(channel.name)
                 if channel.name == channel_name:
                     await channel.delete(reason="Delete malding")
                     await guild.create_text_channel(channel_name, reason="Recreate malding", category=channel.category)
