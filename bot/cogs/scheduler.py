@@ -55,9 +55,8 @@ class Cog(commands.Cog, name="cog"):
         # Nothing yet, but might need to handle serialization logic or smth
         state_broker: bot.cogs.persistent_state_broker.Cog = self.bot.get_cog("persistent_state_broker")
         debug: bot.cogs.debug.Cog = self.bot.get_cog("debug")
-        await debug.debug_print(self.cog_name)
         await debug.debug_print(self.__cog_name__)
-        state = state_broker.get_state(self.cog_name)
+        state = state_broker.get_state(self.__cog_name__)
         if state is not None:
             self.tasks = state
         else:
@@ -65,7 +64,7 @@ class Cog(commands.Cog, name="cog"):
 
     async def cog_unload(self) -> None:
         state_broker: bot.cogs.persistent_state_broker.Cog = self.bot.get_cog("persistent_state_broker")
-        state_broker.set_state(self.cog_name, self.tasks)
+        state_broker.set_state(self.__cog_name__, self.tasks)
 
     def get_scheduler(self, cog: str) -> CogScheduler:
         if cog not in self.tasks:
