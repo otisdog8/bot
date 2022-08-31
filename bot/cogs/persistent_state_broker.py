@@ -15,6 +15,12 @@ class Cog(commands.Cog, name="persistent_state_broker"):
     def get_state(self, key: str) -> Any:
         return self.state.pop(key, None)
 
+    @commands.command()
+    @commands.is_owner()
+    async def clear_persistent_storage(self, ctx):
+        self.state = {}
+        await ctx.send("Cleared")
+
 async def setup(bot):
     await bot.add_cog(Cog(bot))
 
