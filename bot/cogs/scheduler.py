@@ -46,7 +46,8 @@ class CogScheduler:
                     item.cancel()
                 v[k1] = []
 
-class Cog(commands.Cog, name="cog"):
+
+class Cog(commands.Cog, name="scheduler"):
     def __init__(self, bot):
         self.bot: commands.Bot = bot
         self.tasks: dict[str, dict[int, dict[str, list[Task] | dict]]] = {}
