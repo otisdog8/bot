@@ -14,8 +14,11 @@ class Cog(commands.Cog, name="malding"):
         self.bot: commands.Bot = bot
 
     async def cog_load(self) -> None:
+        asyncio.create_task(self.run_channel_deletes())
+
+    async def run_channel_deletes(self) -> None:
         now = datetime.datetime.now()
-        time = now.replace(hour=6, minute=50, second=0, microsecond=0)
+        time = now.replace(hour=5, minute=54, second=0, microsecond=0)
         diff = time - now
         secs = diff.total_seconds()
         print(secs)
@@ -32,7 +35,6 @@ class Cog(commands.Cog, name="malding"):
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
-        # TODO: add channel find logic
         if message.guild.id == guildId:
             self.last_message = datetime.datetime.now()
             await asyncio.sleep(duration)
