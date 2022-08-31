@@ -1,3 +1,5 @@
+import asyncio
+
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
@@ -6,7 +8,7 @@ from os import getenv, chdir
 __version__ = "0.1.0"
 
 
-def main():
+async def main():
     # Signs of life
     print("Hello, world!")
 
@@ -25,7 +27,8 @@ def main():
     intents = discord.Intents.default()
     intents.message_content = True
     bot = commands.Bot(command_prefix="~", intents=intents)
-    bot.load_extension("cogs.loading")
+
+    await bot.load_extension("cogs.loading")
     bot.get_cog("loading")._initialize_all()
 
     @bot.event
@@ -35,8 +38,8 @@ def main():
         print("ID:", bot.user.id)
 
     # Run the bot
-    bot.run(TOKEN)
+    await bot.start(TOKEN)
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())

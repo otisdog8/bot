@@ -15,7 +15,7 @@ class Cog(commands.Cog, name="loading"):
     async def load(self, ctx, *modules):
         for m in modules:
             if m in EXTENSIONS_THAT_EXIST:
-                self.bot.load_extension("cogs." + m)
+                await self.bot.load_extension("cogs." + m)
                 await ctx.send("Loaded " + m)
             else:
                 await ctx.send("Module not found")
@@ -26,7 +26,7 @@ class Cog(commands.Cog, name="loading"):
     async def _reload(self, ctx, *modules):
         for m in modules:
             if m in EXTENSIONS_THAT_EXIST and m not in UNRELOADABLE_EXTENSIONS:
-                self.bot.reload_extension("cogs." + m)
+                await self.bot.reload_extension("cogs." + m)
                 await ctx.send("Reloaded " + m)
             else:
                 await ctx.send("Module not found")
@@ -36,7 +36,7 @@ class Cog(commands.Cog, name="loading"):
     async def unload(self, ctx, *modules):
         for m in modules:
             if m in EXTENSIONS_THAT_EXIST:
-                self.bot.unload_extension("cogs." + m)
+                await self.bot.unload_extension("cogs." + m)
                 await ctx.send("Unloaded " + m)
             else:
                 await ctx.send("Module not found")
@@ -50,18 +50,18 @@ class Cog(commands.Cog, name="loading"):
         else:
             await ctx.send(error)
 
-    def _initialize_all(self):
+    async def _initialize_all(self):
         for m in EXTENSIONS_TO_LOAD:
             if m != "loading":
-                self.bot.load_extension("cogs." + m)
+                await self.bot.load_extension("cogs." + m)
 
-    def _load_all(self):
+    async def _load_all(self):
         for m in EXTENSIONS_TO_LOAD:
-            self.bot.load_extension("cogs." + m)
+            await self.bot.load_extension("cogs." + m)
 
-    def _unload_all(self):
+    async def _unload_all(self):
         for m in EXTENSIONS_TO_LOAD:
-            self.bot.unload_extension("cogs." + m)
+            await self.bot.unload_extension("cogs." + m)
 
 
 def setup(bot):
