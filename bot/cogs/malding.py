@@ -18,7 +18,7 @@ class Cog(commands.Cog, name="malding"):
 
     async def run_channel_deletes(self) -> None:
         now = datetime.datetime.now()
-        time = now.replace(hour=5, minute=56, second=0, microsecond=0)
+        time = now.replace(hour=5, minute=58, second=0, microsecond=0)
         diff = time - now
         secs = diff.total_seconds()
         print(secs)
