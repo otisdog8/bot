@@ -27,6 +27,7 @@ class Cog(commands.Cog, name="malding"):
             # Delete and recreate
             guild = await self.bot.fetch_guild(guildId)
             for channel in guild.channels:
+                print(channel.name)
                 if channel.name == channel_name:
                     await channel.delete(reason="Delete malding")
                     await guild.create_text_channel(channel_name, reason="Recreate malding", category=channel.category)
