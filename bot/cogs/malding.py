@@ -34,14 +34,14 @@ class Cog(commands.Cog, name="malding"):
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
-        if message.guild.id == guildId:
+        if message.guild.id == guildId and message.channel.name == channel_name:
             self.last_message = datetime.datetime.now()
             await asyncio.sleep(duration)
             if (self.last_message + datetime.timedelta(seconds=duration)) < datetime.datetime.now():
                 # Purge the channel
                 for channel in message.guild.channels:
                     if channel.name == channel_name:
-                        await message.channel.purge(limit=None)
+                        await channel.purge(limit=None)
                         break
 
 
