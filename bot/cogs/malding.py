@@ -16,7 +16,7 @@ class Cog(commands.Cog, name="malding"):
         self.last_message: datetime.datetime = None
         self.bot: commands.Bot = bot_instance
         scheduler: bot.cogs.scheduler.Cog = self.bot.get_cog("scheduler")
-        self.scheduler: bot.cogs.scheduler.CogScheduler = scheduler.get_scheduler()
+        self.scheduler: bot.cogs.scheduler.CogScheduler = scheduler.get_scheduler(self.__cog_name__)
 
     async def cog_load(self) -> None:
         self.scheduler.run_task(self.run_channel_deletes())
