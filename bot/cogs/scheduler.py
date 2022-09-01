@@ -51,12 +51,11 @@ class Cog(commands.Cog, name="scheduler"):
     def __init__(self, bot):
         self.bot: commands.Bot = bot
         self.tasks: dict[str, dict[int, dict[str, list[Task] | dict]]] = {}
+        self.debug: bot.cogs.debug.Cog = self.bot.get_cog("debug")
 
     async def cog_load(self) -> None:
         # Nothing yet, but might need to handle serialization logic or smth
         state_broker: bot.cogs.persistent_state_broker.Cog = self.bot.get_cog("persistent_state_broker")
-        debug: bot.cogs.debug.Cog = self.bot.get_cog("debug")
-        await debug.debug_print(self.__cog_name__)
         state = state_broker.get_state(self.__cog_name__)
         if state is not None:
             self.tasks = state
