@@ -4,7 +4,7 @@ import discord
 from discord.ext import commands
 from fastai.vision.all import *
 
-class Cog(commands.Cog, name="cog"):
+class Cog(commands.Cog, name="nsfwfilter"):
     def __init__(self, bot):
         self.bot: commands.Bot = bot
         dirname = os.path.dirname(__file__)
