@@ -11,6 +11,7 @@ python-dotenv = "^0.14.0"
 mcrcon = "^0.6.0"
 pystemd = "^0.8.0"
 fastai = "^2.7.9"
+torch = "^1.12.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
