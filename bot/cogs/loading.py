@@ -2,7 +2,7 @@ from discord.ext import commands
 
 
 EXTENSIONS_TO_LOAD = ("loading", "debug", "config", "loading_redundant",  "persistent_state_broker", "management", "scheduler", "dad")
-EXTENSIONS_THAT_EXIST = list(EXTENSIONS_TO_LOAD) + ["minecraft", "channelarchive", "malding", "nsfwfilter"]
+EXTENSIONS_THAT_EXIST = list(EXTENSIONS_TO_LOAD) + ["minecraft", "channelarchive", "malding", "nsfwfilter", "infiltration"]
 UNRELOADABLE_EXTENSIONS = ("config",)
 
 
