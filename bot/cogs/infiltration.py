@@ -20,6 +20,17 @@ class Cog(commands.Cog, name="infiltration"):
         await ctx.send(str(invs))
 
     @commands.command()
+    @commands.check(is_owner())
+    async def invite_infiltration(self, ctx):
+        await ctx.send("1")
+        guild = self.bot.get_guild(964451976186310668)
+        await ctx.send("2")
+        await ctx.send("3")
+        link = await discord_guild.text_channels[0].create_invite()
+        await ctx.send("4")
+        await ctx.send(str(link))
+        
+    @commands.command()
     async def checklife(self, ctx):
         await ctx.send("1")
 
