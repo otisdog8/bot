@@ -9,7 +9,7 @@ class Cog(commands.Cog, name="infiltration"):
 
     @commands.command()
     @commands.check(is_owner())
-    async def unban(self, ctx, server: int, user: int):
+    async def unban_infiltration(self, ctx, server: int, user: int):
         await ctx.send("1")
         guild = self.bot.get_guild(server)
         await ctx.send("2")
