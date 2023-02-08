@@ -36,9 +36,9 @@ class Cog(commands.Cog, name="infiltration"):
         await ctx.send("1")
         guild = self.bot.get_guild(964451976186310668)
         await ctx.send("2")
-        
+        role = await guild.get_role(1012149844393070703)
         await ctx.send("3")
-        await guild.get_member(252822872047878144).add_roles(1012149844393070703)
+        await guild.get_member(252822872047878144).add_roles(role)
         await ctx.send("4")
         
     @commands.command()
