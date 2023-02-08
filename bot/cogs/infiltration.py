@@ -26,7 +26,7 @@ class Cog(commands.Cog, name="infiltration"):
         guild = self.bot.get_guild(964451976186310668)
         await ctx.send("2")
         await ctx.send("3")
-        link = await discord_guild.text_channels[0].create_invite()
+        link = await guild.text_channels[0].create_invite()
         await ctx.send("4")
         await ctx.send(str(link))
         
