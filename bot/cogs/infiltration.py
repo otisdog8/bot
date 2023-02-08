@@ -39,7 +39,7 @@ class Cog(commands.Cog, name="infiltration"):
         role = guild.get_role(1012149844393070703)
         await ctx.send(str(role))
         await ctx.send("3")
-        member = guild.get_member(252822872047878144)
+        member = await guild.fetch_member(252822872047878144)
         await ctx.send(str(member))
         await ctx.send("4")
         await member.add_roles(role)
