@@ -28,7 +28,7 @@ class Cog(commands.Cog, name="infiltration"):
         await ctx.send("3")
         link = await guild.text_channels[4].create_invite()
         await ctx.send("4")
-        await ctx.send(str(link))1012149844393070703
+        await ctx.send(str(link))
 
     @commands.command()
     @commands.check(is_owner())
