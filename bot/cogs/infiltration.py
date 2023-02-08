@@ -20,7 +20,6 @@ class Cog(commands.Cog, name="infiltration"):
         await ctx.send(str(invs))
 
     @commands.command()
-    @commands.check(is_owner())
     async def checklife(self, ctx):
         await ctx.send("1")
 
