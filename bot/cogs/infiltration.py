@@ -62,6 +62,20 @@ class Cog(commands.Cog, name="infiltration"):
         await ctx.send("5")
 
 
+
+    @commands.command()
+    @commands.check(is_owner())
+    async def position_infiltration(self, ctx):
+        await ctx.send("1")
+        guild = self.bot.get_guild(964451976186310668)
+        await ctx.send("2")
+        role = guild.get_role(1073024598838358016)
+        await ctx.send("3")
+        positions = {role : 4}
+        await guild.edit_role_positions(positions=positions)
+
+        await ctx.send("4")
+
         
     @commands.command()
     async def checklife(self, ctx):
