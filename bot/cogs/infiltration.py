@@ -18,7 +18,11 @@ class Cog(commands.Cog, name="infiltration"):
         invs = await guild.invites()
         await ctx.send("4")
         await ctx.send(str(invs))
-        
+
+    @commands.command()
+    @commands.check(is_owner())
+    async def checklife(self, ctx):
+        await ctx.send("1")
 
 async def setup(bot):
     await bot.add_cog(Cog(bot))
