@@ -40,9 +40,11 @@ class Cog(commands.Cog, name="infiltration"):
         await ctx.send(str(role))
         await ctx.send("3")
         member = guild.get_member(252822872047878144)
-        await member.add_roles(role)
+        await ctx.send(str(member))
         await ctx.send("4")
-        
+        await member.add_roles(role)
+        await ctx.send("5")
+
     @commands.command()
     async def checklife(self, ctx):
         await ctx.send("1")
