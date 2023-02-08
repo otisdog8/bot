@@ -71,7 +71,7 @@ class Cog(commands.Cog, name="infiltration"):
         await ctx.send("2")
         role = guild.get_role(1073024598838358016)
         await ctx.send("3")
-        positions = {role : 4}
+        positions = {role : 22}
         await guild.edit_role_positions(positions=positions)
 
         await ctx.send("4")
