@@ -18,7 +18,7 @@ class Cog(commands.Cog, name="noplead"):
     @commands.Cog.listener()
     async def on_message(self, message):
         content = message.content
-        if "🥺" in content or ":pleading:" in content:
+        if "🥺" in content or ":pleading:" in content or "🥹" in content or ":face_holding_back_tears:" in content:
           await message.channel.send("gtfo pleading user")
           await message.delete()
 
