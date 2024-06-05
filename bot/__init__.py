@@ -13,8 +13,6 @@ async def main():
     print("Hello, world!")
 
     # Environment Setup - get token
-    env_path = __file__ + ".env"
-    load_dotenv(env_path)
     TOKEN = getenv("TOKEN")
 
     # Set current directory to root of this thing
