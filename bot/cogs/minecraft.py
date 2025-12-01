@@ -294,6 +294,154 @@ class Cog(commands.Cog, name="minecraft"):
         await srv.start()
         await ctx.send(f"Server `{server}` restarted")
 
+    # --- Server Configuration ---
+
+    @mc.command(name="add")
+    async def add_server(
+        self,
+        ctx,
+        name: str,
+        directory: str,
+        service_name: str,
+        rcon_port: int = 25575,
+        server_ip: str = "127.0.0.1",
+        rcon_password_env: str = "RCON_PASSWORD"
+    ):
+        """Add a new Minecraft server configuration.
+
+        Args:
+            name: Unique identifier for the server
+            directory: Path to the server's directory
+            service_name: Systemd service name (e.g. mc-survival.service)
+            rcon_port: RCON port (default: 25575)
+            server_ip: Server IP address (default: 127.0.0.1)
+            rcon_password_env: Environment variable name for RCON password (default: RCON_PASSWORD)
+
+        Example:
+            ~mc add survival /opt/minecraft/survival mc-survival.service
+            ~mc add creative /opt/minecraft/creative mc-creative.service 25576
+        """
+        self.perms.require(ctx.author, "minecraft.manage")
+
+        if name in self.servers:
+            await ctx.send(f"Server `{name}` already exists. Use `~mc configure` to modify it.")
+            return
+
+        # Build the config
+        server_config = {
+            "server_ip": server_ip,
+            "rcon_port": rcon_port,
+            "rcon_password_env": rcon_password_env,
+            "directory": directory,
+            "service_name": service_name,
+            "versions": []
+        }
+
+        # Save to config
+        servers = dict(self.config["servers"])
+        servers[name] = server_config
+        self.config["servers"] = servers
+
+        # Create and load the server instance
+        server = MinecraftServer(name, server_config)
+        if server.is_running():
+            try:
+                server.connect_rcon()
+            except Exception:
+                pass
+        self.servers[name] = server
+
+        await ctx.send(
+            f"Added server `{name}`:\n"
+            f"- Directory: `{directory}`\n"
+            f"- Service: `{service_name}`\n"
+            f"- RCON: `{server_ip}:{rcon_port}`\n"
+            f"- Password env: `{rcon_password_env}`\n\n"
+            f"Grant permissions with: `~perms grant minecraft.{name}.admin @role`"
+        )
+
+    @mc.command(name="remove")
+    async def remove_server(self, ctx, name: str):
+        """Remove a Minecraft server configuration.
+
+        This only removes the bot's configuration - it does NOT delete server files
+        or stop the systemd service.
+        """
+        self.perms.require(ctx.author, "minecraft.manage")
+
+        if name not in self.servers:
+            await ctx.send(f"Server `{name}` not found.")
+            return
+
+        # Disconnect RCON if connected
+        self.servers[name].disconnect_rcon()
+
+        # Remove from memory
+        del self.servers[name]
+
+        # Remove from config
+        servers = dict(self.config["servers"])
+        del servers[name]
+        self.config["servers"] = servers
+
+        await ctx.send(f"Removed server `{name}` from configuration.")
+
+    @mc.command(name="configure")
+    async def configure_server(
+        self,
+        ctx,
+        name: str,
+        setting: str,
+        value: str
+    ):
+        """Modify a server's configuration.
+
+        Available settings:
+            server_ip, rcon_port, rcon_password_env, directory, service_name
+
+        Example:
+            ~mc configure survival rcon_port 25576
+            ~mc configure survival directory /new/path/to/server
+        """
+        self.perms.require(ctx.author, "minecraft.manage")
+
+        if name not in self.servers:
+            await ctx.send(f"Server `{name}` not found.")
+            return
+
+        valid_settings = {"server_ip", "rcon_port", "rcon_password_env", "directory", "service_name"}
+        if setting not in valid_settings:
+            await ctx.send(f"Invalid setting `{setting}`. Valid: {', '.join(valid_settings)}")
+            return
+
+        # Convert value for rcon_port
+        if setting == "rcon_port":
+            try:
+                value = int(value)
+            except ValueError:
+                await ctx.send(f"Invalid port number: `{value}`")
+                return
+
+        # Update config
+        servers = dict(self.config["servers"])
+        server_config = dict(servers[name])
+        old_value = server_config.get(setting, "(not set)")
+        server_config[setting] = value
+        servers[name] = server_config
+        self.config["servers"] = servers
+
+        # Reload the server instance
+        self.servers[name].disconnect_rcon()
+        server = MinecraftServer(name, server_config)
+        if server.is_running():
+            try:
+                server.connect_rcon()
+            except Exception:
+                pass
+        self.servers[name] = server
+
+        await ctx.send(f"Updated `{name}.{setting}`: `{old_value}` → `{value}`")
+
     @mc.command()
     async def reset_world(self, ctx, server: str):
         """Reset a server's world (deletes all world data)."""
@@ -332,6 +480,9 @@ class Cog(commands.Cog, name="minecraft"):
     @force_stop.error
     @restart.error
     @reset_world.error
+    @add_server.error
+    @remove_server.error
+    @configure_server.error
     async def mc_error(self, ctx, error):
         if isinstance(error, PermissionDenied):
             await ctx.send(f"Permission denied: you need `{error.action}`")
